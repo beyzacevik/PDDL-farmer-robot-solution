@@ -1,0 +1,53 @@
+(define (problem task-3-problem) 
+(:domain task-3-domain) 
+(:objects 
+
+field1 field2 field3 field4 
+shears
+robby
+seeds
+watering-pot
+arm
+
+) 
+(:init 
+
+(is-field field1)
+(is-field field2)
+(is-field field3)
+(is-field field4)
+
+(vegetable-crops field2)
+
+(is-robot robby)
+(at robby field4)
+(free arm)
+
+(is-shears shears)
+(is-tool shears)
+(at shears field1)
+
+(is-wateringpot watering-pot)
+(is-tool watering-pot)
+(at watering-pot field2)
+
+(is-seeds seeds)
+(is-tool seeds)
+(at seeds field3)
+
+
+)
+
+ (:goal  (and (seeded field2) (watered field2))))
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

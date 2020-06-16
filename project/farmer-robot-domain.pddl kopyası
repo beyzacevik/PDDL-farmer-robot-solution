@@ -1,0 +1,56 @@
+(define (domain task-3-domain)
+  (:requirements :strips)
+  (:predicates 
+               (is-tool ?tool)
+               (is-wateringpot ?watering-pot)
+               (is-seeds ?seeds)
+               (is-shears ?shears)
+               (is-robot ?robot)
+               (is-field ?field)
+               (empty ?field)
+               (vegetable-crops ?field)
+               (at ?robby-or-tool ?field)
+               (watered ?field)
+               (hold ?robby ?tool)
+               (seeded ?field)
+               (free ?arm)
+    )
+
+ (:action go
+           :parameters (?from ?to ?robby )
+           :precondition (and  (is-robot ?robby)(not (at ?robby ?to)) (at ?robby ?from) (is-field ?from) (is-field ?to))
+           :effect (and  (at ?robby ?to) (not (at ?robby ?from))))
+
+ (:action move-tool
+           :parameters (?from ?to ?tool ?robby ?arm )
+           :precondition  (and (is-robot ?robby) (is-tool ?tool) (is-field ?from) (is-field ?to) (at ?robby ?from) (at ?tool ?from) (free ?arm) )
+           :effect (and (at ?robby ?to) (at ?tool ?to)  (free ?arm) (not (hold ?robby ?tool)) ))
+  
+  (:action grasp
+           :parameters (?tool ?field ?robby ?arm)
+           :precondition (and  (is-tool ?tool) (is-robot ?robby) (is-field ?field) (free ?arm) (not (hold ?robby ?tool)) (at ?tool ?field) (at ?robby ?field))
+           :effect (and (hold ?robby ?tool) (not (at ?tool ?field))))
+
+
+  (:action release
+           :parameters (?tool ?field ?robby ?arm)
+           :precondition (and  (is-tool ?tool) (is-field ?field) (is-robot ?robby) (at ?robby ?field) (hold ?robby ?tool) (not (free ?arm)))
+           :effect (and (free ?arm) (not (hold ?robby ?tool)) (at ?tool ?field)))
+
+  (:action water
+           :parameters (?tool ?robby ?field)
+           :precondition (and  (is-wateringpot ?tool) (is-robot ?robby) (is-field ?field) (at ?robby ?field) (at ?tool ?field) (not (hold ?robby ?tool)) )
+           :effect (and (watered ?field) )
+    )
+    
+  (:action harvest
+           :parameters (?tool ?field ?robby)
+           :precondition (and (is-shears ?tool) (is-robot ?robby) (is-field ?field) (at ?robby ?field) (at ?tool ?field) (hold ?robby ?tool) (vegetable-crops ?field) (not (empty ?field)) )
+           :effect (and (not (vegetable-crops ?field)) (empty ?field)))
+           
+  (:action spread-seeds
+           :parameters (?tool ?field ?robby)
+           :precondition (and (is-seeds ?tool) (is-field ?field) (at ?robby ?field) (at ?tool ?field) (empty ?field) (not (watered ?field)) )
+           :effect (and (seeded ?field) (not (empty ?field)))))
+    
+ 
